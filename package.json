@@ -1,0 +1,29 @@
+{
+  "name": "apitest",
+  "version": "1.0.0",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/app",
+    "dev": "nodemon src/app"
+  },
+  "nodemonConfig": {
+    "verbose": true,
+    "ignore": ["public/**", "**/files_expiration.json"]
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@distube/ytdl-core": "^4.16.12",
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "fluent-ffmpeg": "^2.1.3",
+    "path": "^0.12.7",
+    "spottydl": "^0.2.7",
+    "yt-dlp-wrap": "^2.3.12"
+  }
+}

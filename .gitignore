@@ -1,0 +1,7 @@
+.vscode/*
+node_modules/*
+output/*
+
+files_expiration.json
+
+start.bat

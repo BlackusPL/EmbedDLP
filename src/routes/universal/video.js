@@ -1,0 +1,67 @@
+const path = require('path');
+const outputDir = path.join(process.cwd(), 'output');
+const fs = require('fs');
+const YTDlpWrap = require('yt-dlp-wrap').default;
+const ytDlpWrap = new YTDlpWrap();
+const cleanExpiredFiles = require('../../CleanExpiredFiles');
+
+module.exports = async (req, res) => {
+    cleanExpiredFiles();
+    const url = req.query.q;
+    if (!url) {
+        return res.status(400).json({ error: 'Brak adresu URL w zapytaniu' });
+    }
+    try {
+        const expirationPath = path.join(process.cwd(), '/src/files_expiration.json');
+        let data = {};
+        if (fs.existsSync(expirationPath)) {
+            data = JSON.parse(fs.readFileSync(expirationPath, 'utf8'));
+        }
+        // Sprawdź, czy plik już istnieje dla podanego URL w source_urls
+        for (const [fileName, meta] of Object.entries(data)) {
+            if (
+                meta.source_urls &&
+                meta.source_urls.includes(url) &&
+                fs.existsSync(path.join(outputDir, fileName)) &&
+                fileName.endsWith('.mp4')
+            ) {
+                // Aktualizuj czas wygaśnięcia i dodaj url jeśli nie ma
+                if (!meta.source_urls.includes(url)) meta.source_urls.push(url);
+                meta.expiration = (Date.now() + 5 * 6e4).toString();
+                meta.created_at = meta.created_at || Date.now().toString();
+                data[fileName] = meta;
+                fs.writeFileSync(expirationPath, JSON.stringify(data, null, 4));
+                return res.sendFile(path.join(outputDir, fileName), {headers: {'Content-Type': 'video/mp4'}});
+            }
+        }
+        let metadata = await ytDlpWrap.getVideoInfo(url);
+        const fileName = metadata.id + '.mp4';
+        const filePath = path.join(outputDir, fileName);
+        if (fs.existsSync(expirationPath)) {
+            data = JSON.parse(fs.readFileSync(expirationPath, 'utf8'));
+        }
+        let stdout = await ytDlpWrap.execPromise([
+            url,
+            '--no-check-certificate',
+            '--no-playlist',
+            '--format',
+            'bestvideo[ext=webm]+bestaudio[ext=webm]/bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=webm]/best[ext=mp4]/bestvideo+bestaudio/best',
+            '--embed-thumbnail',
+            '--embed-metadata',
+            '--remux-video', 'mp4',
+            '-o',
+            filePath,
+        ]);
+        // Zapisz nowy wpis do JSON
+        data[fileName] = {
+            created_at: Date.now().toString(),
+            expiration: (Date.now() + 5 * 6e4).toString(),
+            source_urls: [url]
+        };
+        fs.writeFileSync(expirationPath, JSON.stringify(data, null, 4));
+        res.sendFile(filePath, {headers: {'Content-Type': 'video/mp4'}});
+    } catch (error) {
+        console.error('Błąd podczas pobierania:', error);
+        res.status(500).json({ error: 'Wystąpił błąd podczas pobierania' });
+    }
+}
