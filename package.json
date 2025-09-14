@@ -9,7 +9,10 @@
   },
   "nodemonConfig": {
     "verbose": true,
-    "ignore": ["public/**", "**/files_expiration.json"]
+    "ignore": [
+      "public/**",
+      "**/files_expiration.json"
+    ]
   },
   "keywords": [],
   "author": "",

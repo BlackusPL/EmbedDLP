@@ -8,7 +8,7 @@ const cleanExpiredFiles = require('../CleanExpiredFiles');
 module.exports = async (req, res) => {
     cleanExpiredFiles();
     const url = req.query.q;
-    const mtype = req.query.mt;
+    const mtype = req.query.video;
     if (!url) {
         return res.status(400).json({ error: 'Brak adresu URL w zapytaniu' });
     }
@@ -22,6 +22,7 @@ module.exports = async (req, res) => {
         var headext = 'audio/mpeg';
         var ytargs = [
             url,
+            '-f', 'ba',
             '--embed-thumbnail',
             '--no-check-certificate',
             '--no-playlist',
@@ -29,14 +30,14 @@ module.exports = async (req, res) => {
             '--audio-format',
             'mp3',
             '--embed-metadata',
-            '-o',
         ];
         switch (mtype) {
-            case 'audio':
+            case '0' && 'false':
                 var ext = '.mp3';
                 var headext = 'audio/mpeg';
                 var ytargs = [
                     url,
+                    '-f', 'ba',
                     '--embed-thumbnail',
                     '--no-check-certificate',
                     '--no-playlist',
@@ -44,14 +45,14 @@ module.exports = async (req, res) => {
                     '--audio-format',
                     'mp3',
                     '--embed-metadata',
-                    '-o',
                 ];
                 break;
-            case 'video':
+            case '1' && 'true':
                 var ext = '.mp4';
                 var headext = 'video/mp4';
                 var ytargs = [
                     url,
+                    '-f', 'bv',
                     '--no-check-certificate',
                     '--no-playlist',
                     '--format',
@@ -59,7 +60,7 @@ module.exports = async (req, res) => {
                     '--embed-thumbnail',
                     '--embed-metadata',
                     '--remux-video', 'mp4',
-                    '-o',
+                    //'-o',
                 ];
                 break;
         }
@@ -80,13 +81,13 @@ module.exports = async (req, res) => {
                 return res.sendFile(path.join(outputDir, fileName), {headers: {'Content-Type': headext}});
             }
         }
-        let metadata = await ytDlpWrap.getVideoInfo(url);
+        let metadata = await ytDlpWrap.getVideoInfo(ytargs);
         const fileName = metadata.id + ext;
         const filePath = path.join(outputDir, fileName);
         if (fs.existsSync(expirationPath)) {
             data = JSON.parse(fs.readFileSync(expirationPath, 'utf8'));
         }
-        let stdout = await ytDlpWrap.execPromise(ytargs.concat(filePath));
+        let stdout = await ytDlpWrap.execPromise(ytargs.concat(['-o', filePath]));
         // Zapisz nowy wpis do JSON
         data[fileName] = {
             created_at: Date.now().toString(),
