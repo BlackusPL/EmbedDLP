@@ -16,7 +16,7 @@ module.exports = async (req, res) => {
                 return res.sendFile(filePath);
             } else {
             let track = await SpottyDL.downloadTrack(results, outputDir); // Second parameter is optional...
-            console.log(track)
+            console.log("To: " + track)
             res.sendFile(path.join(track[0].filename));
             }
         });

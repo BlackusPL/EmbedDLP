@@ -81,7 +81,7 @@ module.exports = async (req, res) => {
                 return res.sendFile(path.join(outputDir, fileName), {headers: {'Content-Type': headext}});
             }
         }
-        let metadata = await ytDlpWrap.getVideoInfo(ytargs);
+        let metadata = await ytDlpWrap.getVideoInfo(ytargs); // Maybe use https://youtube-api.spiralp.xyz/video/8hooLs0Hfic for title and timelaps
         const fileName = metadata.id + ext;
         const filePath = path.join(outputDir, fileName);
         if (fs.existsSync(expirationPath)) {

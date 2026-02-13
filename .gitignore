@@ -1,7 +1,18 @@
-.vscode/*
-node_modules/*
 output/*
 
 files_expiration.json
 
 start.bat
+
+### Deno ###
+/.idea/
+/.vscode/
+
+/node_modules
+
+.env
+*.orig
+*.pyc
+*.swp
+
+# End of https://www.toptal.com/developers/gitignore/api/deno
