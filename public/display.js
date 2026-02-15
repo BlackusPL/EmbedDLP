@@ -1,9 +1,9 @@
-module.exports = (req, res) => {
-    const imageUrl = req.query.image;
-    const shareLink = req.protocol + '://' + req.get('host') + req.originalUrl;
+export default (req, res) => {
+  const imageUrl = req.query.image;
+  const shareLink = req.protocol + "://" + req.get("host") + req.originalUrl;
 
-    // Generowanie HTML
-    let htmlContent = `
+  // Generowanie HTML
+  let htmlContent = `
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -53,17 +53,21 @@ module.exports = (req, res) => {
     <h1>Wyświetlacz Obrazów</h1>
     <div id="image-container">
     `;
-    if (!imageUrl) {
-        htmlContent += '<p class="error">Brak adresu obrazu w URL. Dodaj parametr ?image=adres_obrazu</p>';
-    } else {
-        htmlContent += `<img src="${imageUrl}" alt="Obraz z URL" onerror="this.parentElement.innerHTML='<p class=\\'error\\'>Nie udało się załadować obrazu. Sprawdź poprawność adresu URL.</p>'">`;
-    }
+  if (!imageUrl) {
+    htmlContent +=
+      '<p class="error">Brak adresu obrazu w URL. Dodaj parametr ?image=adres_obrazu</p>';
+  } else {
+    htmlContent +=
+      `<img src="${imageUrl}" alt="Obraz z URL" onerror="this.parentElement.innerHTML='<p class=\\'error\\'>Nie udało się załadować obrazu. Sprawdź poprawność adresu URL.</p>'">`;
+  }
 
-    htmlContent += `
+  htmlContent += `
     </div>
     <div class="link-container">
         <p>Link do udostępnienia:</p>
-        <input type="text" id="share-link" value="${imageUrl ? shareLink : ''}" readonly>
+        <input type="text" id="share-link" value="${
+    imageUrl ? shareLink : ""
+  }" readonly>
         <button onclick="copyLink()">Kopiuj</button>
     </div>
     <script>
@@ -78,5 +82,5 @@ module.exports = (req, res) => {
 </html>
     `;
 
-    res.send(htmlContent);
-}
+  res.send(htmlContent);
+};

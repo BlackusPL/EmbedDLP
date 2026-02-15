@@ -1,11 +1,12 @@
-const path = require('path');
+const path = require('node:path');
+const process = require("node:process");
 const outputDir = path.join(process.cwd(), 'output');
 const fs = require('fs');
 const YTDlpWrap = require('yt-dlp-wrap').default;
 const ytDlpWrap = new YTDlpWrap();
-const cleanExpiredFiles = require('../../CleanExpiredFiles');
+const cleanExpiredFiles = require('../../CleanExpiredFiles.js');
 
-module.exports = async (req, res) => {
+export default async (req, res) => {
     cleanExpiredFiles();
     const url = req.query.q;
     if (!url) {
@@ -29,13 +30,13 @@ module.exports = async (req, res) => {
                 return res.sendFile(path.join(outputDir, fileName), {headers: {'Content-Type': 'audio/mpeg'}});
             }
         }
-        let metadata = await ytDlpWrap.getVideoInfo(url);
+        const metadata = await ytDlpWrap.getVideoInfo(url);
         const fileName = metadata.id + '.mp3';
         const filePath = path.join(outputDir, fileName);
         if (fs.existsSync(expirationPath)) {
             data = JSON.parse(fs.readFileSync(expirationPath, 'utf8'));
         }
-        let stdout = await ytDlpWrap.execPromise([
+        await ytDlpWrap.execPromise([
             url,
             '--embed-thumbnail',
             '--no-check-certificate',
@@ -54,9 +55,9 @@ module.exports = async (req, res) => {
             source_urls: [url]
         };
         fs.writeFileSync(expirationPath, JSON.stringify(data, null, 4));
-        res.sendFile(filePath, {headers: {'Content-Type': 'audio/mpeg'}});
+        return res.sendFile(filePath, {headers: {'Content-Type': 'audio/mpeg'}});
     } catch (error) {
         console.error('Błąd podczas pobierania:', error);
-        res.status(500).json({ error: 'Wystąpił błąd podczas pobierania' });
+        return res.status(500).json({ error: 'Wystąpił błąd podczas pobierania' });
     }
 }

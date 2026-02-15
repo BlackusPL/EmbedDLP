@@ -1,9 +1,10 @@
-const path = require('path');
+const path = require('node:path');
+const process = require("node:process");
 const outputDir = path.join(process.cwd(), 'output');
 const fs = require('fs');
 const YTDlpWrap = require('yt-dlp-wrap').default;
 const ytDlpWrap = new YTDlpWrap();
-const cleanExpiredFiles = require('../../CleanExpiredFiles');
+const cleanExpiredFiles = require('../../CleanExpiredFiles.js');
 
 module.exports = async (req, res) => {
     cleanExpiredFiles();
@@ -34,13 +35,13 @@ module.exports = async (req, res) => {
                 return res.sendFile(path.join(outputDir, fileName), {headers: {'Content-Type': 'video/mp4'}});
             }
         }
-        let metadata = await ytDlpWrap.getVideoInfo(url);
+        const metadata = await ytDlpWrap.getVideoInfo(url);
         const fileName = metadata.id + '.mp4';
         const filePath = path.join(outputDir, fileName);
         if (fs.existsSync(expirationPath)) {
             data = JSON.parse(fs.readFileSync(expirationPath, 'utf8'));
         }
-        let stdout = await ytDlpWrap.execPromise([
+        await ytDlpWrap.execPromise([
             url,
             '--no-check-certificate',
             '--no-playlist',

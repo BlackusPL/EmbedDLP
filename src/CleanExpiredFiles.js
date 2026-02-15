@@ -1,15 +1,16 @@
-const path = require('path');
-const fs = require('fs');
+import path from 'node:path';
+import process from "node:process";
+import fs from 'node:fs';
 const outputDir = path.join(process.cwd(), 'output');
 
 // Funkcja czyszcząca wygasłe pliki
-module.exports = function cleanExpiredFiles() {
+export default function cleanExpiredFiles() {
     const expirationPath = path.join(process.cwd(), '/src/files_expiration.json');
     let data;
     try {
         data = JSON.parse(fs.readFileSync(expirationPath, 'utf8'));
-    } catch (e) {
-        return; // Brak pliku lub błąd odczytu
+    } catch (_e) {
+        return _e; // Brak pliku lub błąd odczytu
     }
     const now = Date.now();
     let changed = false;
@@ -17,7 +18,7 @@ module.exports = function cleanExpiredFiles() {
         if (Number(meta.expiration) < now) {
             const filePath = path.join(outputDir, filename);
             if (fs.existsSync(filePath)) {
-                try { fs.unlinkSync(filePath); } catch (e) { /* ignore */ }
+                try { fs.unlinkSync(filePath); } catch { /* ignore */ }
             }
             delete data[filename];
             changed = true;

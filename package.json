@@ -2,6 +2,7 @@
   "name": "apitest",
   "version": "1.0.0",
   "main": "src/app.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/app",
@@ -15,9 +16,9 @@
     ]
   },
   "keywords": [],
-  "author": "",
+  "author": "BlackusPL",
   "license": "ISC",
-  "description": "",
+  "description": "App for downloading music from spotify and youtube and embedding it in the site",
   "dependencies": {
     "@distube/ytdl-core": "^4.16.12",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
