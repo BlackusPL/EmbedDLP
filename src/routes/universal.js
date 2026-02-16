@@ -6,6 +6,7 @@ const YTDlpWrap = YTDlpWrapModule.default,
   ytDlpWrap = new YTDlpWrap(),
   outputDir = path.join(process.cwd(), "output");
 import cleanExpiredFiles from "../../src/CleanExpiredFiles.js";
+import errorHandler from "../../src/errorHandler.js";
 
 export default async (req, res) => {
   const url = req.query.q, mtype = req.query.video;
@@ -113,9 +114,6 @@ export default async (req, res) => {
     return res.sendFile(filePath, { headers: { "Content-Type": headext } });
   } catch (error) {
     console.error("Błąd podczas pobierania:", error);
-    if (error.message.includes("HTTPError 404: Not Found")) {
-      return res.status(404).json({ error: "Nie można znaleźć tego wideo" });
-    }
-    return res.status(500).json({ error: "Wystąpił błąd podczas pobierania" });
+    return errorHandler(error, res);
   }
 };
