@@ -5,7 +5,7 @@ const outputDir = path.join(process.cwd(), 'output');
 
 // Funkcja czyszcząca wygasłe pliki
 export default function cleanExpiredFiles() {
-    const expirationPath = path.join(process.cwd(), '/src/files_expiration.json');
+    const expirationPath = path.join(process.cwd(), '/output/files_expiration.json');
     let data;
     try {
         data = JSON.parse(fs.readFileSync(expirationPath, 'utf8'));

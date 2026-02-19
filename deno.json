@@ -1,7 +1,7 @@
 {
   "allowScripts": {
     "allow": [],
-    "deny": ["npm:@biomejs/biome@1.8.3"]
+    "deny": []
   },
   "tasks": {
     "dev": "deno -A --watch src/app.js",

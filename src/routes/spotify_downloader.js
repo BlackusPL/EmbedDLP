@@ -18,7 +18,7 @@ export default async (req, res) => {
   try {
     const expirationPath = path.join(
       process.cwd(),
-      "/src/files_expiration.json",
+      "/output/files_expiration.json",
     );
     let data = {};
     if (fs.existsSync(expirationPath)) {
@@ -39,7 +39,8 @@ export default async (req, res) => {
         meta.created_at = meta.created_at || Date.now().toString();
         data[fileName] = meta;
         fs.writeFileSync(expirationPath, JSON.stringify(data, null, 4));
-        res.sendFile(path.join(outputDir, fileName), {
+        res.sendFile(fileName, {
+          root: outputDir,
           headers: { "Content-Type": "audio/mpeg" },
         });
         return cleanExpiredFiles();
@@ -50,12 +51,13 @@ export default async (req, res) => {
         $ = cheerio.load(request),
         title = $(".encore-text-title-medium").text().replaceAll(" ", "+"),
         author = $(".encore-text-title-medium + div a").text().replaceAll(" ", "+"),
+        timestamp = $("div.e-91000-text.encore-text-body-small:has(span) span:last-child").text().split(":").reduce((acc, time) => acc * 60 + parseInt(time), 0),
         ytargs = [
             "-I",
             ss ? ss : "1",
             `https://music.youtube.com/search?q=[${author}+${title}]#songs`,
             "--match-filter",
-            "duration <= 300",
+            "duration <= " + timestamp,
             "-f",
             "ba",
             "--embed-thumbnail",
@@ -80,7 +82,8 @@ export default async (req, res) => {
       source_urls: [url+"&ss="+(ss ? ss : "1")],
     };
     fs.writeFileSync(expirationPath, JSON.stringify(data, null, 4));
-    return res.sendFile(filePath, {
+    return res.sendFile(fileName, {
+      root: outputDir,
       headers: { "Content-Type": "audio/mpeg" },
     });
   } catch (error) {

@@ -1,7 +1,7 @@
 import express from 'express';
 import process from "node:process";
 import cors from 'cors';
-import fs from 'node:fs';
+import "dotenv/config";
 //import { fileURLToPath } from 'node:url';
 import ffmpegPath from '@ffmpeg-installer/ffmpeg';
 import ffmpeg from 'fluent-ffmpeg';
@@ -13,10 +13,8 @@ import submit from '../public/submit.js';
 import display from '../public/display.js';
 import home from '../public/index.js';
 
-!fs.existsSync('src') ? fs.mkdirSync('src') : null;
-
 const app = express(),
-    port = 5001;
+    port = process.env.PORT || 5001;
 app.use(express.urlencoded({ extended: true }));
 ffmpeg.setFfmpegPath(ffmpegPath.path);
 process.env.FFMPEG_PATH = ffmpegPath.path;

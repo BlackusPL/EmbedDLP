@@ -16,7 +16,7 @@ export default async (req, res) => {
   try {
     const expirationPath = path.join(
       process.cwd(),
-      "/src/files_expiration.json",
+      "/output/files_expiration.json",
     );
     let data = {}, ext, headext, ytargs;
     if (fs.existsSync(expirationPath)) {
@@ -91,7 +91,8 @@ export default async (req, res) => {
         meta.created_at = meta.created_at || Date.now().toString();
         data[fileName] = meta;
         fs.writeFileSync(expirationPath, JSON.stringify(data, null, 4));
-        res.sendFile(path.join(outputDir, fileName), {
+        res.sendFile(fileName, {
+          root: outputDir,
           headers: { "Content-Type": headext },
         });
         return cleanExpiredFiles();
@@ -111,7 +112,7 @@ export default async (req, res) => {
       source_urls: [url],
     };
     fs.writeFileSync(expirationPath, JSON.stringify(data, null, 4));
-    return res.sendFile(filePath, { headers: { "Content-Type": headext } });
+    return res.sendFile(fileName, { root: outputDir, headers: { "Content-Type": headext } });
   } catch (error) {
     console.error("Błąd podczas pobierania:", error);
     return errorHandler(error, res);
