@@ -22,6 +22,7 @@
   "dependencies": {
     "@distube/ytdl-core": "^4.16.12",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "@types/node": "^25.2.3",
     "cheerio": "^1.2.0",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",

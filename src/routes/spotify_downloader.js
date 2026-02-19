@@ -54,6 +54,8 @@ export default async (req, res) => {
             "-I",
             ss ? ss : "1",
             `https://music.youtube.com/search?q=[${author}+${title}]#songs`,
+            "--match-filter",
+            "duration <= 300",
             "-f",
             "ba",
             "--embed-thumbnail",

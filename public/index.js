@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+export default (_req, res) => {
+    const html = `
+    <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>DarknessAir.ovh - WOW</title>
@@ -19,3 +21,6 @@
     </form>
 </body>
 </html>
+    `;
+    res.send(html);
+}

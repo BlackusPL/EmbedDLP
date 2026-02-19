@@ -1,8 +1,8 @@
 import express from 'express';
 import process from "node:process";
 import cors from 'cors';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import fs from 'node:fs';
+//import { fileURLToPath } from 'node:url';
 import ffmpegPath from '@ffmpeg-installer/ffmpeg';
 import ffmpeg from 'fluent-ffmpeg';
 import spotify_downloader from './routes/spotify_downloader.js';
@@ -11,6 +11,9 @@ import spotify_downloader from './routes/spotify_downloader.js';
 import universal from './routes/universal.js';
 import submit from '../public/submit.js';
 import display from '../public/display.js';
+import home from '../public/index.js';
+
+!fs.existsSync('src') ? fs.mkdirSync('src') : null;
 
 const app = express(),
     port = 5001;
@@ -20,10 +23,10 @@ process.env.FFMPEG_PATH = ffmpegPath.path;
 
 app.use(cors());
 
-// deno-lint-ignore no-unused-vars
-app.get('/', (req, res) => {
-    res.sendFile(path.join(fileURLToPath(import.meta.url), '../../public/index.html'));
-});
+// app.get('/', (_req, res) => {
+//     res.sendFile(path.join(fileURLToPath(import.meta.url), '../../public/index.html'));
+// });
+app.get('/', home);
 // https://darknessair.ovh/music?q=spotify:track:4cOdK2wGLETKBW3PvgPWqT
 
 // Endpoint do obsługi formularza
