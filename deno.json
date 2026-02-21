@@ -6,7 +6,7 @@
   "tasks": {
     "dev": "deno -A --watch src/app.js",
     "start": "deno -A src/app.js",
-    "build": "deno compile -A --no-check --output spo-yt-site src/app.js"
+    "build": "deno compile -A --no-check --output embeddlp src/app.js"
   },
   "imports": {
   }

@@ -10,7 +10,6 @@ import spotify_downloader from './routes/spotify_downloader.js';
 //import video from './routes/universal/video.js';
 import universal from './routes/universal.js';
 import submit from '../public/submit.js';
-import display from '../public/display.js';
 import home from '../public/index.js';
 
 const app = express(),
@@ -43,10 +42,7 @@ app.use('/music', spotify_downloader);
 // YTDLP API 2IN1
 app.use('/universal', universal);
 
-// Middleware do obsługi parametrów URL
-app.get('/display', display);
-
 // Uruchomienie serwera
 app.listen(port, () => {
-    console.log(`Serwer działa na http://blackuspl.local:${port}`);
+    console.log(`Server works on http://localhost:${port}`);
 });
