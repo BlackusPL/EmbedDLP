@@ -3,14 +3,14 @@ export default (_req, res) => {
     <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>DarknessAir.ovh - WOW</title>
+    <title>EmbedDLP</title>
     <meta charset="UTF-8">
     <link rel="icon" href="https://darknessair.ovh/BDPlugins/icon.png" type="image/icon type">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://darknessair.ovh/index.css" rel="stylesheet">
 </head>
 <body class="flex items-center place-content-center gap-3">
-    <h1 class="text-green-800 text-5xl font-bold">WOW!</h1>
+    <h1 class="text-green-800 text-5xl font-bold">EmbedDLP</h1>
     <form method="POST" action="/submit">
         <input type="text" class="text-green-800 font-bold w-[25vw]" placeholder="Type your query here" name="q" required /></div>
         <div class="space-x-5">
