@@ -1,0 +1,10 @@
+{
+    "server_running": "Server is running on port %d",
+    "no_arguments": "No arguments provided",
+    "server_error": "An error occurred during downloading",
+    "drm_protected": "This video/audio is DRM protected and cannot be downloaded",
+    "video_not_found": "Cannot find this video",
+    "unsupported_url": "Unsupported URL",
+    "no_url": "No URL in the request",
+    "download_error": "Error during downloading: %s"
+}

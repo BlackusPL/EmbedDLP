@@ -1,30 +1,49 @@
 import path from 'node:path';
 import process from "node:process";
 import fs from 'node:fs';
-const outputDir = path.join(process.cwd(), 'output');
 
-// Funkcja czyszcząca wygasłe pliki
+const outputDir = path.join(process.cwd(), 'output');
+const expirationPath = path.join(outputDir, 'files_expiration.json');
+
 export default function cleanExpiredFiles() {
-    const expirationPath = path.join(process.cwd(), '/output/files_expiration.json');
     let data;
     try {
-        data = JSON.parse(fs.readFileSync(expirationPath, 'utf8'));
-    } catch (_e) {
-        return _e; // Brak pliku lub błąd odczytu
+        if (!fs.existsSync(expirationPath)) {
+            return;
+        }
+        const fileContent = fs.readFileSync(expirationPath, 'utf8');
+        if (!fileContent.trim()) {
+            return;
+        }
+        data = JSON.parse(fileContent);
+    } catch (e) {
+        return console.error(e); 
     }
     const now = Date.now();
     let changed = false;
-    for (const [filename, meta] of Object.entries(data)) {
+
+    const filenames = Object.keys(data);
+
+    for (const filename of filenames) {
+        const meta = data[filename];
         if (Number(meta.expiration) < now) {
             const filePath = path.join(outputDir, filename);
             if (fs.existsSync(filePath)) {
-                try { fs.unlinkSync(filePath); } catch { /* ignore */ }
+                try {
+                    fs.unlinkSync(filePath);
+                } catch {
+                    continue; 
+                }
             }
             delete data[filename];
             changed = true;
         }
     }
     if (changed) {
-        fs.writeFileSync(expirationPath, JSON.stringify(data, null, 4));
+        try {
+            fs.writeFileSync(expirationPath, JSON.stringify(data, null, 4));
+        } catch (writeErr) {
+            console.error(writeErr);
+        }
     }
 }

@@ -63,6 +63,10 @@ Example structure:
 ```
 Temporary videos and audios are stored in `output` directory and are not accesible trough site.
 
+# Locales
+
+You can create translation to your language by creating json file in `locales` directory.
+
 # Standalone Builds
 
 Using Deno you can compile this app to binary file that can be run anywhere. Simply type `deno run build` and you good to go.

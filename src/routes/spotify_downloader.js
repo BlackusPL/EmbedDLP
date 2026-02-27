@@ -6,14 +6,15 @@ import YTDlpWrapModule from "yt-dlp-wrap";
 const YTDlpWrap = YTDlpWrapModule.default,
   ytDlpWrap = new YTDlpWrap(),
   outputDir = path.join(process.cwd(), "output");
-import cleanExpiredFiles from "../../src/CleanExpiredFiles.js";
+import cleanExpiredFiles from "../CleanExpiredFiles.js";
 import errorHandler from "../errorHandler.js";
+import i18n from "../LanguageConfig.js";
 
 export default async (req, res) => {
   const url = req.query.q,
     ss = req.query.ss;
   if (!url) {
-    return res.status(400).json({ error: "Brak adresu URL w zapytaniu" });
+    return res.status(400).json({ error: i18n.__("no_url") });
   }
   try {
     const expirationPath = path.join(
@@ -82,12 +83,13 @@ export default async (req, res) => {
       source_urls: [url+"&ss="+(ss ? ss : "1")],
     };
     fs.writeFileSync(expirationPath, JSON.stringify(data, null, 4));
+    cleanExpiredFiles();
     return res.sendFile(fileName, {
       root: outputDir,
       headers: { "Content-Type": "audio/mpeg" },
     });
   } catch (error) {
-    console.error("Błąd podczas pobierania:", error);
+    console.error(i18n.__("download_error", error));
     return errorHandler(error, res);
   }
 };
