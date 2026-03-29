@@ -12,7 +12,8 @@ import home from '../public/index.js';
 import i18n from './LanguageConfig.js';
 
 const app = express(),
-    port = process.env.PORT || 5001;
+    port = process.env.PORT || 5001,
+    ip = process.env.IP || '0.0.0.0';
 app.use(express.urlencoded({ extended: true }));
 ffmpeg.setFfmpegPath(ffmpegPath.path);
 process.env.FFMPEG_PATH = ffmpegPath.path;
@@ -36,6 +37,6 @@ app.use('/music', spotify_downloader);
 app.use('/universal', universal);
 
 // Uruchomienie serwera
-app.listen(port, () => {
-    console.log(i18n.__('server_running', port));
+app.listen(port, ip, () => {
+    console.log(i18n.__('server_running', ip + ':' + port));
 });

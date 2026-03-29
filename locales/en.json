@@ -1,5 +1,5 @@
 {
-    "server_running": "Server is running on port %d",
+    "server_running": "Server is running on port %s",
     "no_arguments": "No arguments provided",
     "server_error": "An error occurred during downloading",
     "drm_protected": "This video/audio is DRM protected and cannot be downloaded",

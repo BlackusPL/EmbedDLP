@@ -1,6 +1,6 @@
 {
   "name": "embeddlp",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "src/app.js",
   "type": "module",
   "scripts": {
@@ -21,7 +21,7 @@
   "description": "App for downloading music from spotify and youtube and embedding it in the site",
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
-    "@types/node": "^25.2.3",
+    "@types/node": "^25.5.0",
     "cheerio": "^1.2.0",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",

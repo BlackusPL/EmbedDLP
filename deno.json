@@ -6,7 +6,7 @@
   "tasks": {
     "dev": "deno -A --watch src/app.js",
     "start": "deno -A src/app.js",
-    "build": "deno compile -A --no-check --output embeddlp --include locales src/app.js"
+    "build": "deno compile -A --no-check --output embeddlp --include locales --icon public/embeddlp.ico src/app.js"
   },
   "imports": {
   }
