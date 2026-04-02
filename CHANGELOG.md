@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.04.2026
+
+### Added
+
+- Added option to set expiration time of downloaded files. They are defined in seconds. In `.env` use ex. `EXPIRATION_TIME=300` to make files expire after 5 minutes
+
+## 29.03.2026
+
+### Added
+
+- Icon for:
+    - website page
+    - standalone build
+- Added option to change on what ip is app hosted. In `.env` use ex. `IP=127.0.0.1`
+
 ## 27.02.2026
 
 ### Added

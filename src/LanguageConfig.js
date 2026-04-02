@@ -1,4 +1,5 @@
 import path from 'node:path';
+import process from 'node:process';
 import i18n from 'i18n';
 import "dotenv/config";
 
