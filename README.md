@@ -47,7 +47,7 @@ npm start # or 'node src/app'
 
 # Outputs
 
-Embeded files have 5 minutes before get terminated in next execution of app. They are stored in `output/files_expiration.json`.
+Embeded files by default have 5 minutes before get terminated in next execution of app. They are stored in `output/files_expiration.json`.
 
 Example structure:
 ```json
@@ -62,6 +62,8 @@ Example structure:
 }
 ```
 Temporary videos and audios are stored in `output` directory and are not accesible trough site.
+
+To change expiration time, in `.env` use `EXPIRATION_TIME` in seconds.
 
 # Locales
 
