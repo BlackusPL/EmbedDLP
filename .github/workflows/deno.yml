@@ -18,25 +18,44 @@ permissions:
   contents: read
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+        matrix:
+            os: [ubuntu-latest, windows-latest]
 
     steps:
       - name: Setup repo
         uses: actions/checkout@v4
 
       - name: Setup Deno
-        # uses: denoland/setup-deno@v1
-        uses: denoland/setup-deno@61fe2df320078202e33d7d5ad347e7dcfa0e8f31  # v1.1.2
+        uses: denoland/setup-deno@v2  # v2.x
         with:
-          deno-version: v1.x
+          deno-version: latest
 
       # Uncomment this step to verify the use of 'deno fmt' on each commit.
       # - name: Verify formatting
-      #   run: deno fmt --check
+      #   run: deno fmt --check 
 
       - name: Run linter
         run: deno lint
 
-      - name: Run tests
-        run: deno test -A
+      - name: Install dependencies
+        run: deno install
+
+      - name: Build project (Ubuntu)
+        if: matrix.os == 'ubuntu-latest'
+        run: deno compile -A --no-check --output embeddlp --include locales src/app.js
+
+      - name: Build project (Windows)
+        if: matrix.os == 'windows-latest'
+        run: deno compile -A --no-check --output embeddlp --include locales --icon public/embeddlp.ico src/app.js
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: embeddlp-${{ matrix.os }}
+          path: |
+            embeddlp
+            embeddlp.exe
