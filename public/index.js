@@ -1,4 +1,4 @@
-import i18n from '../src/LanguageConfig.js';
+import i18n from "../src/LanguageConfig.js";
 
 export default (_req, res) => {
   const html = `
@@ -80,7 +80,9 @@ export default (_req, res) => {
 <body>
     <h1>EmbedDLP</h1>
     <form method="POST" action="/submit">
-        <md-outlined-text-field label="${i18n.__('type_query_here')}" name="q" required error-text="Please enter a query"></md-outlined-text-field>
+        <md-outlined-text-field label="${
+    i18n.__("type_query_here")
+  }" name="q" required error-text="Please enter a query"></md-outlined-text-field>
         
         <div class="radio-group">
             <label>
