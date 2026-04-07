@@ -6,5 +6,6 @@
     "video_not_found": "Cannot find this video",
     "unsupported_url": "Unsupported URL",
     "no_url": "No URL in the request",
-    "download_error": "Error during downloading: %s"
+    "download_error": "Error during downloading: %s",
+    "type_query_here": "Type your query here"
 }

@@ -1,5 +1,15 @@
 # Changelog
 
+## 8.04.2026
+
+### Added
+
+- New string: `type_query_here`
+
+### Changed
+
+- Website has been revamped. Now it uses Material UI 3 instead of Tailwind
+
 ## 2.04.2026
 
 ### Added

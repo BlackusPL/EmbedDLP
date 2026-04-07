@@ -1,10 +1,11 @@
 {
-    "server_running": "Serwer działa na porcie %s",
-    "no_arguments": "Nie podano argumentów",
-    "server_error": "Wystąpił błąd podczas pobierania",
-    "drm_protected": "To wideo/audio jest chronione DRM i nie można go pobrać",
-    "video_not_found": "Nie można znaleźć tego wideo",
-    "unsupported_url": "Nieobsługiwany URL",
-    "no_url": "Brak adresu URL w zapytaniu",
-    "download_error": "Błąd podczas pobierania: %s"
+	"server_running": "Serwer działa na porcie %s",
+	"no_arguments": "Nie podano argumentów",
+	"server_error": "Wystąpił błąd podczas pobierania",
+	"drm_protected": "To wideo/audio jest chronione DRM i nie można go pobrać",
+	"video_not_found": "Nie można znaleźć tego wideo",
+	"unsupported_url": "Nieobsługiwany URL",
+	"no_url": "Brak adresu URL w zapytaniu",
+	"download_error": "Błąd podczas pobierania: %s",
+	"type_query_here": "Wpisz swoje zapytanie tutaj"
 }
