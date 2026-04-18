@@ -6,6 +6,15 @@ API that allows you to embed or download every video and audio from [supported s
 >
 > This project wasnt supposed to see daylight and some things could still be related to my stuff
 
+<details>
+<summary>Prebuilds</summary>
+They are only available for 90 days after new commit
+
+**Windows** [Download](https://nightly.link/BlackusPL/EmbedDLP/workflows/deno/main/embeddlp-windows-latest.zip)
+
+**Ubuntu** [Download](https://nightly.link/BlackusPL/EmbedDLP/workflows/deno/main/embeddlp-windows-latest.zip)
+</details>
+
 # Installation
 
 ```bash
