@@ -86,7 +86,7 @@ export default (_req, res) => {
         
         <div class="radio-group">
             <label>
-                <md-radio name="isVideo" value="false"></md-radio>
+                <md-radio name="isVideo" value="false" checked></md-radio>
                 Audio
             </label>
             <label>
@@ -94,7 +94,7 @@ export default (_req, res) => {
                 Video
             </label>
             <label>
-                <md-radio name="isVideo" value="auto" checked></md-radio>
+                <md-radio name="isVideo" value="auto"></md-radio>
                 Music
             </label>
         </div>

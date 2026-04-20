@@ -38,5 +38,5 @@ app.use('/universal', universal);
 
 // Uruchomienie serwera
 app.listen(port, ip, () => {
-    console.log(i18n.__('server_running', ip + ':' + port));
+    console.log(i18n.__('server_running', 'http://' + ip + ':' + port));
 });

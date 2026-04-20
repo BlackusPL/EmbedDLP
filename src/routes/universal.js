@@ -116,7 +116,7 @@ export default async (req, res) => {
     cleanExpiredFiles();
     return res.sendFile(fileName, { root: outputDir, headers: { "Content-Type": headext } });
   } catch (error) {
-    console.error(i18n.__("download_error", error));
+    console.log(i18n.__("download_error", error.toString()));
     return errorHandler(error, res);
   }
 };
