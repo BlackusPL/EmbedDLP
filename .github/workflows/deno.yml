@@ -29,7 +29,7 @@ jobs:
 
     steps:
       - name: Setup repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Deno
         uses: denoland/setup-deno@v2  # v2.x
@@ -55,7 +55,7 @@ jobs:
         run: deno compile -A --no-check --output embeddlp --include locales --icon public/embeddlp.ico src/app.js
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: embeddlp-${{ matrix.os }}
           path: |
