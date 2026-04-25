@@ -1,5 +1,23 @@
 # Changelog
 
+### 25.04.2026
+
+### Changed
+
+- Changed how to run this app in `README.md` in Deno
+- Github Actions now uses Nodejs v24
+
+## 20.04.2026
+
+### Fixed
+
+- Fixed console error
+- Fixed an issue where the error message in console doesn't show up because 'error' is an object that needs to be converted to string.
+
+### Changed
+
+- Changed default download option from Music to Audio.
+
 ## 8.04.2026
 
 ### Added

@@ -29,7 +29,7 @@ cd EmbedDLP
 
 ```bash
 deno install
-deno run start # or 'deno src/app.js'
+deno task start # or deno run start  or 'deno src/app.js'
 ```
 </details>
 
