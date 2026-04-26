@@ -1,5 +1,25 @@
 # Changelog
 
+### 26.04.2026
+
+## Added
+
+- `YT_DLP_PATH` - you can point where yt-dlp is located (For now its must have but Im working on detection of system env one or installed in app root dir)
+- Now embeded files should have names, thumbnails and metadata if they are available
+    - files in `output` directory now uses title names instead of ids
+
+## Changed
+
+- `yt-dlp-wrap` replaced with new `ytdlp-nodejs`
+
+## Fixed
+
+- Fixed console error for spotify downloader
+
+## Removed
+
+- `package-lock.json`
+
 ### 25.04.2026
 
 ### Changed

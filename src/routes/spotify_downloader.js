@@ -2,9 +2,10 @@ import process from "node:process";
 import path from "node:path";
 import fs from "node:fs";
 import * as cheerio from "cheerio";
-import YTDlpWrapModule from "yt-dlp-wrap";
-const YTDlpWrap = YTDlpWrapModule.default,
-  ytDlpWrap = new YTDlpWrap(),
+import { YtDlp } from "ytdlp-nodejs";
+const ytdlp = new YtDlp({
+  binaryPath: process.env.YT_DLP_PATH || "yt-dlp",
+}),
   outputDir = path.join(process.cwd(), "output");
 import cleanExpiredFiles from "../CleanExpiredFiles.js";
 import errorHandler from "../errorHandler.js";
@@ -52,30 +53,24 @@ export default async (req, res) => {
         $ = cheerio.load(request),
         title = $(".encore-text-title-medium").text().replaceAll(" ", "+"),
         author = $(".encore-text-title-medium + div a").text().replaceAll(" ", "+"),
-        timestamp = $("div.e-91000-text.encore-text-body-small:has(span) span:last-child").text().split(":").reduce((acc, time) => acc * 60 + parseInt(time), 0),
-        ytargs = [
-            "-I",
-            ss ? ss : "1",
-            `https://music.youtube.com/search?q=[${author}+${title}]#songs`,
-            "--match-filter",
-            "duration <= " + (timestamp + 60),
-            "-f",
-            "ba",
-            "--embed-thumbnail",
-            "--no-check-certificate",
-            "--no-playlist",
-            "--extract-audio",
-            "--audio-format",
-            "mp3",
-            "--embed-metadata",
-        ],
-        metadata = await ytDlpWrap.getVideoInfo(ytargs),
-            fileName = metadata.id + ".mp3",
-            filePath = path.join(outputDir, fileName);
+        timestamp = $("div[class*=\"e-\"].encore-text-body-small:has(span) span:last-child").text().split(":").reduce((acc, time) => acc * 60 + parseInt(time), 0),
+        filterDuration = (Number.isFinite(timestamp) && timestamp > 0) ? Math.floor(timestamp) + 60 : 600, // check if timestamp is NaN
+        searchUrl = `https://music.youtube.com/search?q=[${author}+${title}]#songs`,
+        metadata = await ytdlp.getInfoAsync(searchUrl),
+        fileName = metadata.entries[ss ? ss - 1 : 0].title + ".mp3",
+        filePath = path.join(outputDir);
     if (fs.existsSync(expirationPath)) {
       data = JSON.parse(fs.readFileSync(expirationPath, "utf8"));
     }
-    await ytDlpWrap.execPromise(ytargs.concat(["-o", filePath]));
+    await ytdlp
+        .download(searchUrl)
+        .addArgs("-I", ss ? ss : "1", "--no-check-certificate", "--no-playlist", "--match-filter", "duration <= " + filterDuration) // or rawArgs
+        .filter('audioonly')
+        .output(filePath)
+        .format({ filter: 'audioonly', quality: 'ba', type: 'mp3' })
+        .embedMetadata(true)
+        .embedThumbnail(true)
+        .run();
     // Zapisz nowy wpis do JSON
     data[fileName] = {
       created_at: Date.now().toString(),
@@ -89,7 +84,7 @@ export default async (req, res) => {
       headers: { "Content-Type": "audio/mpeg" },
     });
   } catch (error) {
-    console.error(i18n.__("download_error", error));
+    console.error(i18n.__("download_error", error.toString()));
     return errorHandler(error, res);
   }
 };

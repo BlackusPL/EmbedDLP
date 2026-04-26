@@ -1,9 +1,10 @@
 import path from "node:path";
 import process from "node:process";
 import fs from "node:fs";
-import YTDlpWrapModule from "yt-dlp-wrap";
-const YTDlpWrap = YTDlpWrapModule.default,
-  ytDlpWrap = new YTDlpWrap(),
+import { YtDlp } from "ytdlp-nodejs";
+const ytdlp = new YtDlp({
+  binaryPath: process.env.YT_DLP_PATH || "yt-dlp",
+}),
   outputDir = path.join(process.cwd(), "output");
 import cleanExpiredFiles from "../CleanExpiredFiles.js";
 import errorHandler from "../errorHandler.js";
@@ -19,65 +20,16 @@ export default async (req, res) => {
       process.cwd(),
       "/output/files_expiration.json",
     );
-    let data = {}, ext, headext, ytargs;
+    let data = {};
     if (fs.existsSync(expirationPath)) {
       data = JSON.parse(fs.readFileSync(expirationPath, "utf8"));
     }
-    switch (mtype) {
-      default: {
-        ext = ".mp3";
-        headext = "audio/mpeg";
-        ytargs = [
-          url,
-          "-f",
-          "ba",
-          "--embed-thumbnail",
-          "--no-check-certificate",
-          "--no-playlist",
-          "--extract-audio",
-          "--audio-format",
-          "mp3",
-          "--embed-metadata",
-        ];
-        break;
-      }
-      case "0" && "false": {
-        ext = ".mp3";
-        headext = "audio/mpeg";
-        ytargs = [
-          url,
-          "-f",
-          "ba",
-          "--embed-thumbnail",
-          "--no-check-certificate",
-          "--no-playlist",
-          "--extract-audio",
-          "--audio-format",
-          "mp3",
-          "--embed-metadata",
-        ];
-        break;
-      }
-      case "1" && "true": {
-        ext = ".mp4";
-        headext = "video/mp4";
-        ytargs = [
-          url,
-          "-f",
-          "bv",
-          "--no-check-certificate",
-          "--no-playlist",
-          "--format",
-          "bestvideo[ext=webm]+bestaudio[ext=webm]/bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=webm]/best[ext=mp4]/bestvideo+bestaudio/best",
-          "--embed-thumbnail",
-          "--embed-metadata",
-          "--remux-video",
-          "mp4",
-          //'-o',
-        ];
-        break;
-      }
-    }
+    
+    // Determine target format
+    const isVideo = mtype === "1" || mtype === "true",
+    ext = isVideo ? ".mp4" : ".mp3",
+    headext = isVideo ? "video/mp4" : "audio/mpeg";
+
     // Sprawdź, czy plik już istnieje dla podanego URL w source_urls
     for (const [fileName, meta] of Object.entries(data)) {
       if (
@@ -99,13 +51,21 @@ export default async (req, res) => {
         return cleanExpiredFiles();
       }
     }
-    const metadata = await ytDlpWrap.getVideoInfo(ytargs), // Maybe use https://youtube-api.spiralp.xyz/video/8hooLs0Hfic for title and timelaps
-      fileName = metadata.id + ext,
-      filePath = path.join(outputDir, fileName);
+    const metadata = await ytdlp.getInfoAsync(url),
+      fileName = metadata.title + ext,
+      filePath = path.join(outputDir);
     if (fs.existsSync(expirationPath)) {
       data = JSON.parse(fs.readFileSync(expirationPath, "utf8"));
     }
-    await ytDlpWrap.execPromise(ytargs.concat(["-o", filePath]));
+    
+    let download = ytdlp.download(url).output(filePath); // .output(path.join(outputDir, '%(id)s.%(ext)s'))
+    if (isVideo) {
+      download = download.format({ filter: 'mergevideo', quality: 'bv', type: 'mp4' }).addArgs("--no-check-certificate", "--no-playlist")?.embedMetadata(true)?.embedThumbnail(true);
+    } else {
+      download = download.format({ filter: 'audioonly', quality: 'ba', type: 'mp3' }).addArgs("--no-check-certificate", "--no-playlist")?.embedMetadata(true)?.embedThumbnail(true);
+    }
+    await download.run();
+
     // Zapisz nowy wpis do JSON
     data[fileName] = {
       created_at: Date.now().toString(),
@@ -116,7 +76,7 @@ export default async (req, res) => {
     cleanExpiredFiles();
     return res.sendFile(fileName, { root: outputDir, headers: { "Content-Type": headext } });
   } catch (error) {
-    console.log(i18n.__("download_error", error.toString()));
+    console.error(i18n.__("download_error", error.toString()));
     return errorHandler(error, res);
   }
 };

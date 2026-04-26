@@ -8,6 +8,7 @@ start.bat
 
 /node_modules
 
+package-lock.json
 .env
 *.orig
 *.pyc
