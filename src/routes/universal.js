@@ -52,17 +52,19 @@ export default async (req, res) => {
       }
     }
     const metadata = await ytdlp.getInfoAsync(url),
-      fileName = metadata.title + ext,
+      prefileName = await metadata.requested_downloads[0].filename,
+      fileName = prefileName.replace(/(.*)\s* \[.*?\]\.(.*)$/g, "$1" + ext),
       filePath = path.join(outputDir);
+      //fs.writeFileSync("test.json", JSON.stringify(metadata, null, 4));
     if (fs.existsSync(expirationPath)) {
       data = JSON.parse(fs.readFileSync(expirationPath, "utf8"));
     }
     
     let download = ytdlp.download(url).output(filePath); // .output(path.join(outputDir, '%(id)s.%(ext)s'))
     if (isVideo) {
-      download = download.format({ filter: 'mergevideo', quality: 'bv', type: 'mp4' }).addArgs("--no-check-certificate", "--no-playlist")?.embedMetadata(true)?.embedThumbnail(true);
+      download = download.format({ filter: 'bv' }).addArgs("--no-check-certificate", "--no-playlist", "--format", "bestvideo[ext=webm]+bestaudio[ext=webm]/bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=webm]/best[ext=mp4]/bestvideo+bestaudio/best", "--remux-video", "mp4")?.embedMetadata(true)?.embedThumbnail(true);
     } else {
-      download = download.format({ filter: 'audioonly', quality: 'ba', type: 'mp3' }).addArgs("--no-check-certificate", "--no-playlist")?.embedMetadata(true)?.embedThumbnail(true);
+      download = download.format({ filter: 'ba' }).addArgs("--no-check-certificate", "--no-playlist", "-x", "--audio-format", "mp3")?.embedMetadata(true)?.embedThumbnail(true);
     }
     await download.run();
 

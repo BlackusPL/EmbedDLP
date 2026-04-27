@@ -1,5 +1,11 @@
 # Changelog
 
+### 27.04.2026
+
+## Fixed
+
+- Issue when title of the file have illegal characters like `\/ :*? "<>|` and downloaded file have ASCII one
+
 ### 26.04.2026
 
 ## Added
