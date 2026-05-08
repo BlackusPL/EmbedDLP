@@ -31,6 +31,9 @@ export default (_req, res) => {
       }
       :root {
         --md-sys-color-primary: #641919;
+        --md-outlined-text-field-input-text-color: white;
+        --md-outlined-text-field-focus-input-text-color: white;
+        --md-outlined-text-field-hover-input-text-color: white;
         font-family: "PerfectDOS", "Google Sans", sans-serif;
         color: white;
       }

@@ -1,6 +1,8 @@
 import express from 'express';
 import process from "node:process";
 import cors from 'cors';
+import { helpers } from 'ytdlp-nodejs';
+await helpers.downloadYtDlp();
 import "dotenv/config";
 //import { fileURLToPath } from 'node:url';
 import ffmpegPath from '@ffmpeg-installer/ffmpeg';

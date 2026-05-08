@@ -21,7 +21,7 @@
   "description": "App for downloading music from spotify and youtube and embedding it in the site",
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
-    "@types/node": "^25.6.0",
+    "@types/node": "^25.6.2",
     "cheerio": "^1.2.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",

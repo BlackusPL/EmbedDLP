@@ -2,7 +2,7 @@
   "version": "5",
   "specifiers": {
     "npm:@ffmpeg-installer/ffmpeg@^1.1.0": "1.1.0",
-    "npm:@types/node@^25.6.0": "25.6.0",
+    "npm:@types/node@^25.6.2": "25.6.2",
     "npm:cheerio@^1.2.0": "1.2.0",
     "npm:cors@^2.8.6": "2.8.6",
     "npm:dotenv@^17.4.2": "17.4.2",
@@ -100,8 +100,8 @@
         "make-plural"
       ]
     },
-    "@types/node@25.6.0": {
-      "integrity": "sha512-+qIYRKdNYJwY3vRCZMdJbPLJAtGjQBudzZzdzwQYkEPQd+PJGixUL5QfvCLDaULoLv+RhT3LDkwEfKaAkgSmNQ==",
+    "@types/node@25.6.2": {
+      "integrity": "sha512-sokuT28dxf9JT5Kady1fsXOvI4HVpjZa95NKT5y9PNTIrs2AsobR4GFAA90ZG8M+nxVRLysCXsVj6eGC7Vbrlw==",
       "dependencies": [
         "undici-types"
       ]
@@ -693,7 +693,7 @@
     "packageJson": {
       "dependencies": [
         "npm:@ffmpeg-installer/ffmpeg@^1.1.0",
-        "npm:@types/node@^25.6.0",
+        "npm:@types/node@^25.6.2",
         "npm:cheerio@^1.2.0",
         "npm:cors@^2.8.6",
         "npm:dotenv@^17.4.2",

@@ -1,5 +1,15 @@
 # Changelog
 
+### 08.05.2026
+
+## Added
+
+- `ytdlp-nodejs` will now download yt-dlp for you so you don't need to download it
+
+## Fixed
+
+- Text input on main page was baerly visible
+
 ### 27.04.2026
 
 ## Fixed

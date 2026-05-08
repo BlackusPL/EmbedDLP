@@ -3,7 +3,7 @@ import process from "node:process";
 import fs from "node:fs";
 import { YtDlp } from "ytdlp-nodejs";
 const ytdlp = new YtDlp({
-  binaryPath: process.env.YT_DLP_PATH || "yt-dlp",
+  binaryPath: process.env.YT_DLP_PATH || undefined,
 }),
   outputDir = path.join(process.cwd(), "output");
 import cleanExpiredFiles from "../CleanExpiredFiles.js";
