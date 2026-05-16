@@ -40,7 +40,7 @@ export default async (req, res) => {
       ) {
         // Aktualizuj czas wygaśnięcia i dodaj url jeśli nie ma
         if (!meta.source_urls.includes(url)) meta.source_urls.push(url);
-        meta.expiration = (Date.now() + parseInt(process.env.EXPIRATION_TIME) * 1000).toString();
+        meta.expiration = (Date.now() + (parseInt(process.env.EXPIRATION_TIME || 300) * 1000)).toString();
         meta.created_at = meta.created_at || Date.now().toString();
         data[fileName] = meta;
         fs.writeFileSync(expirationPath, JSON.stringify(data, null, 4));
@@ -71,7 +71,7 @@ export default async (req, res) => {
     // Zapisz nowy wpis do JSON
     data[fileName] = {
       created_at: Date.now().toString(),
-      expiration: (Date.now() + parseInt(process.env.EXPIRATION_TIME) * 1000).toString(),
+      expiration: (Date.now() + (parseInt(process.env.EXPIRATION_TIME || 300) * 1000)).toString(),
       source_urls: [url],
     };
     fs.writeFileSync(expirationPath, JSON.stringify(data, null, 4));

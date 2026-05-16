@@ -1,5 +1,11 @@
 # Changelog
 
+### 16.05.2026
+
+### Fixed
+
+- Fixed issue where when `EXPIRATION_TIME` was not provided then it returns NaN
+
 ### 08.05.2026
 
 ## Added
